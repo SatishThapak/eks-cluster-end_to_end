@@ -1,8 +1,9 @@
-module "networking" {
+module "vpc" {
   source          = "./modules/networking"
-  project_name    = var.project_name
-  Environment     = var.Environment
-  vpc_cidr        = var.vpc_cidr
-  private_subnets = var.private_subnets
+  cidr_block      = var.cidr_block
+  vpc_name        = var.vpc_name
   public_subnets  = var.public_subnets
+  private_subnets = var.private_subnets
+  project_name    = var.project_name
+  environment     = var.env
 }

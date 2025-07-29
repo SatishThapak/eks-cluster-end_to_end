@@ -1,24 +1,31 @@
-# Environment
-variable "Environment"{
-  type = string
+variable "cidr_block" {
+  type        = string
+  description = "CIDR block for the VPC"
 }
 
-# Stack name
-variable "project_name" {
-  type = string
-}
-
-# VPC CIDR
-variable "vpc_cidr" {
-  type    = string
-}
-
-variable "private_subnets" {
-  description = "List of private subnet CIDR blocks"
-  type        = list(string)
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC"
 }
 
 variable "public_subnets" {
-  description = "List of public subnet CIDR blocks"
-  type        = list(string)
+  type = map(object({
+    cidr = string
+    az   = string
+  }))
+  description = "Map of public subnet configurations"
+}
+
+variable "private_subnets" {
+  type = map(object({
+    cidr = string
+    az   = string
+  }))
+  description = "Map of private subnet configurations"
+}
+variable "environment" {
+  
+}
+variable "project_name" {
+  
 }
