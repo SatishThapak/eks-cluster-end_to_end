@@ -1,10 +1,6 @@
-provider "aws" {
-  region = "us-east-1"  # Specify your desired region
-}
-
- #Creating IAM role for EKS
+#Creating IAM role for EKS
   resource "aws_iam_role" "master" {
-    name = "satish-eks-master1"
+    name = "veera-eks-master1"
 
     assume_role_policy = jsonencode({
       "Version": "2012-10-17",
@@ -36,7 +32,7 @@ provider "aws" {
   }
 
   resource "aws_iam_role" "worker" {
-    name = "satish-eks-worker1"
+    name = "veera-eks-worker1"
 
     assume_role_policy = jsonencode({
       "Version": "2012-10-17",
@@ -53,7 +49,7 @@ provider "aws" {
   }
 
   resource "aws_iam_policy" "autoscaler" {
-    name = "satish-eks-autoscaler-policy1"
+    name = "veera-eks-autoscaler-policy1"
     policy = jsonencode({
       "Version": "2012-10-17",
       "Statement": [
@@ -108,85 +104,4 @@ provider "aws" {
     depends_on = [aws_iam_role.worker]
     name       = "veera-eks-worker-new-profile1"
     role       = aws_iam_role.worker.name
-  }
- 
- # data source 
- data "aws_vpc" "main" {
-  tags = {
-    Name = "eks-vpc"  # Specify the name of your existing VPC
-  }
-}
-
-data "aws_subnet" "subnet-1" {
- vpc_id = data.aws_vpc.main.id
- filter {
-    name = "tag:Name"
-    values = ["Jumphost-subnet1"]
- }
-}
-
-data "aws_subnet" "subnet-2" {
- vpc_id = data.aws_vpc.main.id
- filter {
-    name = "tag:Name"
-    values = ["Jumphost-subnet2"]
- }
-}
-data "aws_security_group" "selected" {
-  vpc_id = data.aws_vpc.main.id
-  filter {
-    name = "tag:Name"
-    values = ["Jumphost-sg"]
- }
-}
-
- #Creating EKS Cluster
-  resource "aws_eks_cluster" "eks" {
-    name     = "project-eks"
-    role_arn = aws_iam_role.master.arn
-
-    vpc_config {
-      subnet_ids = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
-    }
-
-    tags = {
-      "Name" = "MyEKS"
-    }
-
-    depends_on = [
-      aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
-      aws_iam_role_policy_attachment.AmazonEKSServicePolicy,
-      aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
-    ]
-  }
- resource "aws_eks_node_group" "node-grp" {
-    cluster_name    = aws_eks_cluster.eks.name
-    node_group_name = "project-node-group"
-    node_role_arn   = aws_iam_role.worker.arn
-    subnet_ids      = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
-    capacity_type   = "ON_DEMAND"
-    disk_size       = 20
-    instance_types  = ["t2.small"]
-
-   
-
-    labels = {
-      env = "dev"
-    }
-
-    scaling_config {
-      desired_size = 2
-      max_size     = 4
-      min_size     = 1
-    }
-
-    update_config {
-      max_unavailable = 1
-    }
-
-    depends_on = [
-      aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
-      aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
-      aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
-    ]
   }

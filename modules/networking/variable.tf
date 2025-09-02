@@ -29,3 +29,6 @@ variable "environment" {
 variable "project_name" {
   
 }
+variable "aws_security_group" {
+  
+}
