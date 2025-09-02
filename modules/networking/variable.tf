@@ -24,8 +24,8 @@ variable "private_subnets" {
   description = "Map of private subnet configurations"
 }
 variable "environment" {
-  
+
 }
 variable "project_name" {
-  
+
 }

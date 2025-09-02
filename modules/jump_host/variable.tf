@@ -1,6 +1,11 @@
 variable "ami_id" {}
-variable "key_name" {}
 variable "instance_type" {}
-variable "instance_name" {}
+variable "subnet_id" {}
+variable "security_group_id" {}
+variable "instance_profile_name" {}
+variable "project_name" {}
+variable "environment" {}
 variable "iam_role" {}
 variable "region" {}
+variable "instance_name" {}
+variable "instance_profile_id" {}

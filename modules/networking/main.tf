@@ -75,7 +75,7 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_eip" "nat_eip" {
- 
+
   tags = {
     Name = "${var.project_name}-${var.environment}-nat-eip"
   }
