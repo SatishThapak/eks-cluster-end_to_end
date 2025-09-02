@@ -1,4 +1,3 @@
-# Creating IAM role for EKS master
 resource "aws_iam_role" "master" {
   name = "satish-eks-master"
 
@@ -16,28 +15,12 @@ resource "aws_iam_role" "master" {
   })
 
   tags = {
-    Project     = "satish-eks"
-    Environment = "dev"
-    Role        = "master"
+    Name        = "${var.project_name}-${var.environment}-master-role"
+    Environment = var.environment
+    Project     = var.project_name
   }
 }
 
-resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.master.id
-}
-
-resource "aws_iam_role_policy_attachment" "AmazonEKSServicePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = aws_iam_role.master.id
-}
-
-resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-  role       = aws_iam_role.master.id
-}
-
-# Creating IAM role for EKS worker nodes
 resource "aws_iam_role" "worker" {
   name = "satish-eks-worker"
 
@@ -55,9 +38,9 @@ resource "aws_iam_role" "worker" {
   })
 
   tags = {
-    Project     = "satish-eks"
-    Environment = "dev"
-    Role        = "worker"
+    Name        = "${var.project_name}-${var.environment}-worker-role"
+    Environment = var.environment
+    Project     = var.project_name
   }
 }
 
@@ -84,27 +67,10 @@ resource "aws_iam_policy" "autoscaler" {
   })
 
   tags = {
-    Project     = "satish-eks"
-    Environment = "dev"
-    Purpose     = "autoscaler"
+    Name        = "${var.project_name}-${var.environment}-autoscaler-policy"
+    Environment = var.environment
+    Project     = var.project_name
   }
-}
-
-resource "aws_iam_role_policy_attachment" "worker_attachments" {
-  for_each = toset([
-    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
-    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
-  ])
-  role       = aws_iam_role.worker.id
-  policy_arn = each.value
-}
-
-resource "aws_iam_role_policy_attachment" "autoscaler" {
-  policy_arn = aws_iam_policy.autoscaler.arn
-  role       = aws_iam_role.worker.id
 }
 
 resource "aws_iam_instance_profile" "worker" {
@@ -113,8 +79,8 @@ resource "aws_iam_instance_profile" "worker" {
   role       = aws_iam_role.worker.id
 
   tags = {
-    Project     = "satish-eks"
-    Environment = "dev"
-    Role        = "worker"
+    Name        = "${var.project_name}-${var.environment}-worker-profile"
+    Environment = var.environment
+    Project     = var.project_name
   }
 }
