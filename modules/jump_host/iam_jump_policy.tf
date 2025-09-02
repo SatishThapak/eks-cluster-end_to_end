@@ -1,6 +1,6 @@
 
 resource "aws_iam_instance_profile" "instance-profile" {
-  name = "naresh-veera-profile"
+  name = "jump_host_profile"
   role = aws_iam_role.iam-role.name
 }
 
