@@ -1,9 +1,19 @@
 output "vpc_id" {
-  value = aws_vpc.main.id
+  value = module.vpc.vpc_id
 }
+
 output "public_subnet_ids" {
-  value = [for subnet in aws_subnet.public : subnet.id]
+  value = module.vpc.public_subnet_ids
 }
+
 output "private_subnet_ids" {
-  value = [for subnet in aws_subnet.private : subnet.id]
+  value = module.vpc.private_subnet_ids
+}
+
+output "sg_id" {
+  value = module.security_group.security_group_id
+}
+
+output "sg_name" {
+  value = module.security_group.security_group_name
 }

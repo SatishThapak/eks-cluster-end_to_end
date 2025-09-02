@@ -11,6 +11,9 @@ resource "aws_security_group" "security_group" {
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
+      self             = false
+      security_groups  = []
+      prefix_list_ids  = []
     }
   ]
 

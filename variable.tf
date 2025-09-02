@@ -5,4 +5,3 @@ variable "private_subnets" {}
 variable "availability_zone" {}
 variable "environment" {}
 variable "project_name" {}
-variable "aws_security_group" {}
