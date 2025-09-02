@@ -6,6 +6,11 @@ module "vpc" {
   private_subnets = var.private_subnets
   project_name    = var.project_name
   environment     = var.environment
-  aws_security_group = var.aws_security_group
 }
 
+module "security_group" {
+  source       = "./modules/security_groups"
+  vpc_id       = module.vpc.vpc_id
+  project_name = var.project_name
+  environment  = var.environment
+}
