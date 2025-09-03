@@ -4,9 +4,9 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name        = "${var.project_name}-${var.environment}-vpc"
-    Environment = var.environment
+    Name        = "${var.project_name}-vpc"
     Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -14,9 +14,12 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.vpc_name}-igw"
+    Name        = "${var.project_name}-igw"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
+
 
 resource "aws_subnet" "public" {
   for_each          = var.public_subnets
@@ -25,9 +28,12 @@ resource "aws_subnet" "public" {
   availability_zone = each.value.az
 
   tags = {
-    Name = "public-${each.value.az}"
+    Name        = "${var.project_name}-public-${each.value.az}"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
+
 
 resource "aws_subnet" "private" {
   for_each          = var.private_subnets
@@ -36,7 +42,9 @@ resource "aws_subnet" "private" {
   availability_zone = each.value.az
 
   tags = {
-    Name = "private-${each.value.az}"
+    Name        = "${var.project_name}-private-${each.value.az}"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -44,7 +52,19 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-public-rt"
+    Name        = "${var.project_name}-public-rt"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name        = "${var.project_name}-private-rt"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -60,14 +80,6 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-private-rt"
-  }
-}
-
 resource "aws_route_table_association" "private" {
   for_each       = aws_subnet.private
   subnet_id      = each.value.id
@@ -75,9 +87,10 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_eip" "nat_eip" {
-
   tags = {
-    Name = "${var.project_name}-${var.environment}-nat-eip"
+    Name        = "${var.project_name}-nat-eip"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -86,7 +99,9 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = values(aws_subnet.public)[0].id
 
   tags = {
-    Name = "${var.project_name}-${var.environment}-nat-gw"
+    Name        = "${var.project_name}-nat-gw"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -95,3 +110,4 @@ resource "aws_route" "private_nat_route" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat.id
 }
+

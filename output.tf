@@ -9,7 +9,7 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   value = module.vpc.private_subnet_ids
 }
-
+/*
 output "sg_id" {
   value = module.security_group.security_group_id
 }
@@ -17,3 +17,5 @@ output "sg_id" {
 output "sg_name" {
   value = module.security_group.security_group_name
 }
+*/
+
