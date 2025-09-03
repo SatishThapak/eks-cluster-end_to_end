@@ -43,8 +43,7 @@ module "eks_cluster" {
   cluster_name        = var.cluster_name
   master_role_arn     = aws_iam_role.eks_master.arn
   private_subnet_ids  = module.vpc.private_subnet_ids
-  tags                = var.local
-
+ tags = var.tags
   depends_on = [
     aws_iam_role_policy_attachment.eks_cluster_policy,
     aws_iam_role_policy_attachment.eks_service_policy,
