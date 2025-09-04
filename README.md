@@ -14,37 +14,6 @@ The goal of this project is to provide a modular, reusable, and production-ready
 
 ## 🧱 Architecture
 
-eks-cluster-end_to_end/
-├── main.tf                      # Root module: orchestrates all resources
-├── provider.tf                  # AWS provider configuration
-├── variable.tf                  # Input variable declarations
-├── terraform.tfvars             # Variable values for deployment
-├── output.tf                    # Outputs from root module
-├── README.md                    # Project documentation
-├── terraform.tfstate            # Terraform state file (auto-generated)
-├── terraform.tfstate.backup     # Backup of previous state
-├── .gitignore                   # (Recommended) Ignore sensitive files
-├── modules/                     # Reusable infrastructure modules
-│   ├── iam_roles/               # IAM roles for EKS, EC2, autoscaler
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   ├── vpc/                     # VPC, subnets, route tables
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   ├── security_group/          # Security groups for jump host and nodes
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   ├── eks_cluster/             # EKS cluster and node groups
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   ├── jump_host/               # EC2 instance for secure access
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
 
 AWS Infrastructure 
 ├── VPC with Public & Private Subnets 
