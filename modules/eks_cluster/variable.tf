@@ -1,12 +1,19 @@
-variable "cluster_name" {}
-variable "master_role_arn" {}
-variable "private_subnet_ids" {
+variable "project_name" {}
+variable "environment" {}
+variable "cluster_role_arn" {}
+variable "worker_role_arn" {}
+variable "subnet_ids" {
   type = list(string)
 }
-variable "tags" {
-  type = map(string)
+variable "instance_type" {
+  default = "t3.medium"
 }
-variable "cluster_dependencies" {
-  type    = list(any)
-  default = []
+variable "desired_size" {
+  default = 2
+}
+variable "min_size" {
+  default = 1
+}
+variable "max_size" {
+  default = 3
 }

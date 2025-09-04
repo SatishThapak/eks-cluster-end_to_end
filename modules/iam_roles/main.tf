@@ -110,6 +110,13 @@ resource "aws_iam_role" "jump_host" {
       }
     ]
   })
+
+  tags = {
+  Project     = var.project_name
+  Environment = var.environment
+  Role        = "JumpHost"
+}
+
 }
 
 resource "aws_iam_role_policy_attachment" "jump_host_admin_access" {

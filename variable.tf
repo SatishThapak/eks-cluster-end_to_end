@@ -12,4 +12,3 @@ variable "ami_id" {}
 variable "region" {}
 variable "iam_role" {}
 variable "cluster_name" {}
-variable "tags" {}
